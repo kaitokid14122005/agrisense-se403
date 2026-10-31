@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph EdgeGateway["Container: edge-gateway"]
+        Collector["Telemetry Collector\n(MQTT/HTTP Receiver)"]
+        RuleEngine["Local Rule Engine\n(Kiểm tra ngưỡng độ ẩm)"]
+        SQLiteBuf["SQLite Store-and-Forward\n(Lưu tạm khi đứt mạng)"]
+        Forwarder["Cloud Sync & Replay Worker\n(Jittered Backoff + Batching)"]
+        Actuator["Valve Actuator Driver\n(Xác thực chữ ký & kích hoạt van)"]
+    end
+
+    Collector --> RuleEngine
+    Collector --> SQLiteBuf
+    RuleEngine -->|"Mất mạng / Khẩn cấp"| Actuator
+    SQLiteBuf --> Forwarder

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant S as sensor-simulator
+    participant E as edge-gateway (Rule Engine + SQLite)
+    participant C as cloud-ingestion
+    participant D as device-shadow-svc
+
+    Note over E,C: Kịch bản 1: Đứt kết nối mạng WAN (Network Cut)
+    S->>E: Telemetry (soil_moisture = 18%)
+    E--xC: Mất kết nối tới Cloud MQTT
+    E->>E: Lưu bản tin vào SQLite Buffer
+    E->>E: Local Rule Engine phát hiện độ ẩm < 25% -> Tự động MỞ VAN
+
+    Note over E,C: Kịch bản 2: Mạng WAN khôi phục (Reconnection)
+    E->>C: Xả dữ liệu từ SQLite theo lô (Jittered Backoff)
+    E->>D: Đồng bộ trạng thái reported (valve = OPEN)

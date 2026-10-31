@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph FarmEdge["Tầng Biên Nông Trại (Farm Edge)"]
+        Sim["sensor-simulator\n(>= 1.000 Sensors MQTT & HTTP)"]
+        Edge["edge-gateway\n(Local Rule Engine + SQLite Buffer)"]
+    end
+
+    subgraph CloudPlatform["Tầng Đám Mây (Cloud Platform)"]
+        Ingest["cloud-ingestion\n(MQTT Broker + Protocol Adapter + Stream Processor)"]
+        Shadow["device-shadow-svc\n(Desired/Reported State + Auth/OTA + AI API)"]
+        UI["dashboard-ui\n(React / Grafana Web UI)"]
+    end
+
+    Sim -->|"MQTT / HTTP Telemetry"| Edge
+    Edge -->|"MQTT Publish / Batch Replay"| Ingest
+    Ingest -->|"Chuẩn hóa & Cập nhật trạng thái"| Shadow
+    Shadow <-->|"Đồng bộ Delta (Desired/Reported)"| Edge
+    UI <-->|"REST / WebSocket"| Shadow
+    UI <--|"Truy vấn luồng dữ liệu thực"| Ingest

@@ -1,0 +1,11 @@
+flowchart TB
+    Farmer["👨‍🌾 Nông dân / Quản lý nông trại"]
+    Sensors["🌡️ Cảm biến IoT (>= 1.000 thiết bị MQTT/HTTP)"]
+    Valves["🚰 Hệ thống Van tưới thông minh"]
+    AgriSense["🌱 Hệ thống AgriSense IoT Platform"]
+    WeatherAI["🤖 Dịch vụ Dự báo Thời tiết / AI ngoài"]
+
+    Farmer -->|"Giám sát & Điều khiển tưới"| AgriSense
+    Sensors -->|"Gửi dữ liệu độ ẩm, nhiệt độ"| AgriSense
+    AgriSense -->|"Lệnh đóng/mở van (Local & Cloud)"| Valves
+    AgriSense <-->|"Truy vấn khuyến nghị tưới"| WeatherAI

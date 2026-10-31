@@ -1,0 +1,20 @@
+# Node / Python / OS
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.local
+
+# SQLite & Data buffers
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs & build artifacts
+*.log
+dist/
+build/
+.DS_Store
+Thumbs.db

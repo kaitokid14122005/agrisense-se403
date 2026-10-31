@@ -1,0 +1,20 @@
+flowchart TB
+    subgraph DockerHost["Docker Compose Environment"]
+        subgraph EdgeNet["edge-network"]
+            C1["agrisense-sensor-simulator"]
+            C2["agrisense-edge-gateway\nVolume: /data/buffer.db"]
+        end
+        subgraph CloudNet["cloud-network"]
+            C3["agrisense-mqtt-broker (:1883)"]
+            C4["agrisense-cloud-ingestion (:8081)"]
+            C5["agrisense-device-shadow-svc (:8082)"]
+            C6["agrisense-dashboard-ui (:3000)"]
+        end
+    end
+
+    C1 --> C2
+    C2 --> C3
+    C3 <--> C4
+    C3 <--> C5
+    C6 --> C4
+    C6 --> C5
